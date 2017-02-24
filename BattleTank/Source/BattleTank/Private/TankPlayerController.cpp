@@ -11,17 +11,15 @@ void ATankPlayerController::BeginPlay()
 	// Enable tick event
 	PrimaryActorTick.bCanEverTick = true;
 
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
-
 	ATank* Tank = GetPlayerTank();
 
 	if (!Tank)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController Tank Not Found"));
+		
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing: %s"), *(Tank->GetName()));
+		
 	}
 }
 
@@ -30,8 +28,6 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimAtCrosshair();
-
-	// UE_LOG(LogTemp, Warning, TEXT("Player controller ticking"));
 }
 
 ATank* ATankPlayerController::GetPlayerTank() const
@@ -50,8 +46,6 @@ void ATankPlayerController::AimAtCrosshair()
 
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
-
 		// Get world location if linetrace through crosshair
 		// If it hits the landscape
 			// Tell controlled tank to aim at this point
@@ -60,6 +54,17 @@ void ATankPlayerController::AimAtCrosshair()
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 {
+	// Find the crosshair position
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY);
+
+	float ScreenLocationX = ViewportSizeX * CrosshairXLocation;
+	float ScreenLocationY = ViewportSizeY * CrosshairYLocation;
+
+	auto ScreenLocation = FVector2D(ScreenLocationX, ScreenLocationY);
+
+	// De-project the screen position of the crosshair to a world direction
+	// Line-trace along that look direction, and see what we hit (up to some maximum range)
 	HitLocation = FVector(1.0);
 	return true;
 }
