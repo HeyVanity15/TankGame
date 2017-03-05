@@ -21,5 +21,9 @@ private:
 
 	virtual void BeginPlay() override;
 	
-	
+	virtual void Tick(float DeltaTime) override;
+
+	void AimAtPawn(ATank* Pawn);
+
+	ATank* PlayerPawn = nullptr;
 };

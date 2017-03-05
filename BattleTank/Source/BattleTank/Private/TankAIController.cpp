@@ -9,8 +9,10 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Super::SetActorTickEnabled(true);
+
 	auto Tank = GetAiTank();
-	auto PlayerPawn = GetPlayerTank();
+	PlayerPawn = GetPlayerTank();
 
 	if (Tank)
 	{
@@ -31,6 +33,15 @@ void ATankAIController::BeginPlay()
 	}
 }
 
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (PlayerPawn)
+	{
+		AimAtPawn(PlayerPawn);
+	}
+}
 
 ATank* ATankAIController::GetAiTank() const
 {
@@ -47,4 +58,12 @@ ATank* ATankAIController::GetPlayerTank() const
 	}
 
 	return Tank;
+}
+
+void ATankAIController::AimAtPawn(ATank* Tank)
+{
+	if (Tank)
+	{
+		GetAiTank()->AimAt(Tank->GetActorLocation());
+	}
 }

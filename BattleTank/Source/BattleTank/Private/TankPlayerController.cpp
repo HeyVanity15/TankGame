@@ -49,7 +49,8 @@ void ATankPlayerController::AimAtCrosshair()
 		// Get world location if linetrace through crosshair
 		// If it hits the landscape
 			// Tell controlled tank to aim at this point
-		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *HitLocation.ToString());
+		GetPlayerTank()->AimAt(HitLocation);
 	}
 }
 
